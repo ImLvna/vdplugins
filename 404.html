@@ -38,7 +38,7 @@
     <script>
       let pluginName = window.location.pathname.split('/')[1];
       if (pluginName.toLowerCase() === "vdplugins") {
-        pluginName = window.location.pathname.split('/')[2];
+        pluginName = `vdplugins/${window.location.pathname.split('/')[2]}`;
       }
       
       async function loadPlugin() {
