@@ -1,0 +1,14 @@
+{
+  "name": "!Test Plugin",
+  "description": "Luna's workspace",
+  "authors": [
+    {
+      "name": "Luna <3",
+      "id": "174200708818665472"
+    }
+  ],
+  "main": "src/index.ts",
+  "vendetta": {
+    "icon": "ic_badge_staff"
+  }
+}
