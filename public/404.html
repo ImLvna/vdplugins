@@ -36,7 +36,10 @@
     </div>
 
     <script>
-      const pluginName = window.location.pathname.split('/')[1];
+      let pluginName = window.location.pathname.split('/')[1];
+      if (pluginName.toLowerCase() === "vdplugins") {
+        pluginName = window.location.pathname.split('/')[2];
+      }
       
       async function loadPlugin() {
         const data = await fetch(`/${pluginName}/manifest.json`).then(res => res.json());
