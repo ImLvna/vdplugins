@@ -1,0 +1,87 @@
+<html>
+  <head>
+    <title>404 Not Found</title>
+
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 14px;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .hidden0w {
+        width: 0;
+        height: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="loading">
+      <h1>Loading Plugin Data...</h1>
+    </div>
+    <div id="pluginData" class="hidden">
+      <h1 id="pluginName">Plugin Name</h1>
+      <p id="pluginDescription">Description</p>
+      <button id="installButton">Install</button>
+      <h2>Authors</h2>
+      <ul id="pluginAuthors">
+      </ul>
+    </div>
+    <div id="real404" class="hidden">
+      <h1>404 Not Found</h1>
+      <p>The plugin you requested could not be found.</p>
+    </div>
+
+    <script>
+      const pluginName = window.location.pathname.split('/')[1];
+      
+      async function loadPlugin() {
+        const data = await fetch(`/${pluginName}/manifest.json`).then(res => res.json());
+        document.getElementById('pluginName').innerText = data.name;
+        document.getElementById('pluginDescription').innerText = data.description;
+        const authors = document.getElementById('pluginAuthors');
+        data.authors.forEach(author => {
+          const authorElement = document.createElement('li');
+          authorElement.innerText = author.name;
+          authors.appendChild(authorElement);
+        });
+
+        const installButton = document.getElementById('installButton');
+        installButton.addEventListener('click', async () => {
+          // copy the link
+          const link = document.createElement('div');
+          link.innerText = window.location.href;
+          link.classList.add('hidden0w');
+          document.body.appendChild(link);
+          const range = document.createRange();
+          range.selectNode(link);
+          window.getSelection().addRange(range);
+          document.execCommand('copy');
+          window.getSelection().removeAllRanges();
+          document.body.removeChild(link);
+
+          installButton.innerText = 'Copied!';
+          setTimeout(() => {
+            installButton.innerText = 'Install';
+          }, 1000);
+        });
+
+        document.getElementById('loading').classList.add('hidden');
+        document.getElementById('pluginData').classList.remove('hidden');
+      }
+
+      (async () => {
+        try {
+          await loadPlugin();
+        } catch (e) {
+          console.error(e);
+          document.getElementById('loading').classList.add('hidden');
+          document.getElementById('real404').classList.remove('hidden');
+        }
+      })();
+    </script>
+  </body>
+</html>
